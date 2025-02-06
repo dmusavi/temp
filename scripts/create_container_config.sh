@@ -1,13 +1,6 @@
-#!/bin/bash
-
 # Function to create the container configuration (config.json).
 create_container_config() {
-    if [ ! -d "." ]; then
-        log "Error: Directory . does not exist."
-        error_exit "Directory for config.json does not exist."
-    fi
-
-    cat << EOF > "config.json"
+    cat << EOF > "config/config.json"
 {
     "ociVersion": "1.0.2",
     "process": {
@@ -25,7 +18,10 @@ create_container_config() {
         "rlimits": [{"type": "RLIMIT_NOFILE", "hard": 1024, "soft": 1024}],
         "terminal": false
     },
-    "root": {"path": "rootfs", "readonly": false},
+    "root": {
+        "path": "rootfs",
+        "readonly": false
+    },
     "hostname": "arch-container",
     "linux": {
         "namespaces": [
@@ -67,6 +63,6 @@ create_container_config() {
 }
 EOF
 
-    sudo chmod 644 "config.json"
+    sudo chmod 644 "config/config.json"
     log "Container config created."
 }
