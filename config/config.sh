@@ -5,8 +5,9 @@ EXPECTED_CHECKSUM="SHA256_CHECKSUM_HERE"   # Expected SHA256 checksum for verifi
 IMAGE_ID="arch-container"                  # Container ID for crun
 NETNS_NAME="arch-netns"                    # Network namespace name
 BRIDGE_NAME="br0"                          # Bridge name (brought up by init systemv ifup br0)
+HOST_VETH_IP="10.0.20.1/24"                # IP address for the host's veth interface (with subnet mask)
 BRIDGE_IP="10.10.10.14/24"                # IP address for the bridge network
-CONTAINER_IP="10.0.20.1/24"               # IP address for the container within its network
+CONTAINER_IP="10.0.20.2/24"               # IP address for the container within its network
 HOST_PORT="8088"                           # Host port for container port forwarding
 CONTAINER_PORT="80"                        # Container port
 
