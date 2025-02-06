@@ -2,6 +2,7 @@
 
 # Function to start the container.
 start_container() {
+    local bundle_dir="."
     log "Starting container $IMAGE_ID..."
 
     # Remove existing container if it exists
@@ -14,7 +15,7 @@ start_container() {
     fi
 
     # Create the container
-    sudo crun create --bundle "$BUNDLE_DIR" "$IMAGE_ID" || {
+    sudo crun create --bundle "$bundle_dir" "$IMAGE_ID" || {
         log "Failed to create container $IMAGE_ID"
         exit 1
     }
@@ -28,7 +29,7 @@ start_container() {
     # Retrieve the container PID without using jq
     container_pid=$(sudo crun list | awk -v id="$IMAGE_ID" '$1 == id {print $2}')
     if [[ -n "$container_pid" ]]; then
-        echo "$container_pid" > "$BUNDLE_DIR/container_${IMAGE_ID}.pid"
+        echo "$container_pid" > "$bundle_dir/container_${IMAGE_ID}.pid"
         log "Container $IMAGE_ID started with PID $container_pid"
     else
         log "Error: Failed to retrieve container PID"
