@@ -4,7 +4,6 @@
 setup_networking() {
     log "Setting up network..."
 
-
     # Create network namespace if it doesn't exist
     if ! sudo ip netns list | grep -qw "$NETNS_NAME"; then
         log "Creating network namespace $NETNS_NAME..."
@@ -38,9 +37,6 @@ setup_networking() {
     # Set up default route in the container
     CONTAINER_GATEWAY="${HOST_VETH_IP%/*}"
     sudo ip netns exec "$NETNS_NAME" ip route add default via "$CONTAINER_GATEWAY" dev "$CONTAINER_VETH_NAME"
-
-    # Enable IP forwarding on the host
-    sudo sysctl -w net.ipv4.ip_forward=1
 
     # Optional: Add route on host to reach container from other interfaces (e.g., br0)
     # This allows the host to route traffic to the container's subnet
