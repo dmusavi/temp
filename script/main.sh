@@ -1,11 +1,13 @@
 #!/bin/bash
 
-# Source variables
-source ./config/vars.sh
+# Source configuration
+source ./config/config.sh
 
 # Source utility functions
 source ./lib/utils.sh
-source ./lib/cgroup.sh
+source ./lib/precleanup.sh
+source ./lib/setup_cgroup_v2.sh
+source ./lib/cleanup.sh
 source ./lib/network.sh
 source ./setup/dependencies.sh
 source ./setup/directories.sh
@@ -26,5 +28,5 @@ main() {
     echo "Container started with port forwarding from host $HOST_PORT to container $CONTAINER_PORT."
 }
 
-trap cleanup ERR EXIT
+trap cleanup EXIT
 main "$@"
