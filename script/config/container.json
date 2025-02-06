@@ -1,3 +1,14 @@
+#!/bin/bash
+source ../config/config.sh
+
+# Function to create the container configuration (config.json).
+create_container_config() {
+    if [ ! -d "$BUNDLE_DIR" ]; then
+        log "Error: Directory $BUNDLE_DIR does not exist."
+        error_exit "Directory for config.json does not exist."
+    fi
+
+    cat << EOF > "$BUNDLE_DIR/config.json"
 {
     "ociVersion": "1.0.2",
     "process": {
@@ -54,4 +65,9 @@
         {"destination": "/etc/nginx/nginx.conf", "source": "$HOST_NGINX_CONF", "type": "bind", "options": ["ro", "rbind"]},
         {"destination": "/usr/share/nginx/html", "source": "$HOST_MEDIA_DIR", "type": "bind", "options": ["ro", "rbind"]}
     ]
+}
+EOF
+
+    sudo chmod 644 "$BUNDLE_DIR/config.json"
+    log "Container config created."
 }
