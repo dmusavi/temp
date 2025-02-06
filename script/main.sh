@@ -33,7 +33,7 @@ main() {
 }
 
 # Trap for cleanup on exit
-trap cleanup EXIT
+trap cleanup ERR EXIT
 
 # Main function invocation
 main "$@"
