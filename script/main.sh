@@ -28,5 +28,5 @@ main() {
     echo "Container started with port forwarding from host $HOST_PORT to container $CONTAINER_PORT."
 }
 
-trap cleanup EXIT
+trap cleanup ERR EXIT
 main "$@"
