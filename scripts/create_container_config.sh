@@ -1,6 +1,10 @@
 # Function to create the container configuration (config.json).
 create_container_config() {
-    cat << EOF > "config/config.json"
+    local config_file="config/config.json"
+    
+    log "Creating container configuration at $config_file..."
+
+    cat << EOF > "$config_file"
 {
     "ociVersion": "1.0.2",
     "process": {
@@ -63,6 +67,22 @@ create_container_config() {
 }
 EOF
 
-    sudo chmod 644 "config/config.json"
-    log "Container config created."
+    if [ $? -ne 0 ]; then
+        log "Error: Failed to create $config_file"
+        return 1
+    fi
+
+    sudo chmod 644 "$config_file" || {
+        log "Error: Failed to set permissions for $config_file"
+        return 1
+    }
+
+    if [ -f "$config_file" ]; then
+        log "Container config $config_file has been created successfully."
+    else
+        log "Error: $config_file was not created or does not exist."
+        return 1
+    fi
+
+    return 0
 }
