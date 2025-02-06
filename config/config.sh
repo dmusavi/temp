@@ -3,6 +3,8 @@
 # Variables
 EXPECTED_CHECKSUM="SHA256_CHECKSUM_HERE"   # Expected SHA256 checksum for verification (replace with actual checksum)
 IMAGE_ID="arch-container"                  # Container ID for crun
+HOST_VETH_NAME="veth1"
+CONTAINER_VETH_NAME="veth0"
 NETNS_NAME="arch-netns"                    # Network namespace name
 BRIDGE_NAME="br0"                          # Bridge name (brought up by init systemv ifup br0)
 HOST_VETH_IP="10.0.20.1/24"                # IP address for the host's veth interface (with subnet mask)
