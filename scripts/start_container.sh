@@ -16,10 +16,13 @@ start_container() {
     fi
 
     # Create and start the container
-    # Remove existing console socket if present
-    sudo rm -f /tmp/console.sock 2>/dev/null || true
+    # Create console socket directory and file
+    console_socket="/tmp/console.sock"
+    sudo mkdir -p "$(dirname "$console_socket")"
+    sudo touch "$console_socket"
+    sudo chmod 777 "$console_socket"  # Temporary permissions for testing
     
-    sudo crun run --bundle="$(pwd)/$bundle_dir" --console-socket=/tmp/console.sock --detach "$IMAGE_ID" || {
+    sudo crun run --bundle="$(pwd)/$bundle_dir" --console-socket="$console_socket" --detach "$IMAGE_ID" || {
         log "Failed to create and start container $IMAGE_ID"
         exit 1
     }
