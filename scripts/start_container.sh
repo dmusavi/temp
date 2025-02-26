@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 # Function to start the container.
 start_container() {
     local bundle_dir="bundle" # Assuming 'bundle' is at the root of the git repo
@@ -15,7 +16,10 @@ start_container() {
     fi
 
     # Create and start the container
-    sudo crun run --bundle="$(pwd)/$bundle_dir" -t --detach "$IMAGE_ID" || {
+    # Remove existing console socket if present
+    sudo rm -f /tmp/console.sock 2>/dev/null || true
+    
+    sudo crun run --bundle="$(pwd)/$bundle_dir" --console-socket=/tmp/console.sock --detach "$IMAGE_ID" || {
         log "Failed to create and start container $IMAGE_ID"
         exit 1
     }
