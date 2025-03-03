@@ -15,13 +15,16 @@ start_container() {
         }
     fi
 
-    # Create and start the container
     # Create console socket directory and file
     console_socket="/tmp/console.sock"
-    sudo mkdir -p "$(dirname "$console_socket")"
-    sudo touch "$console_socket"
+    sudo rm -f "$console_socket"  # Remove any existing socket
+    sudo mkfifo "$console_socket"  # Create a FIFO for the console socket
     sudo chmod 777 "$console_socket"  # Temporary permissions for testing
-    
+
+    # Start a background process to keep the FIFO open
+    (cat < "$console_socket" > /dev/null &)  # This keeps the FIFO open
+
+    # Run the container
     sudo crun run --bundle="$(pwd)/$bundle_dir" --console-socket="$console_socket" --detach "$IMAGE_ID" || {
         log "Failed to create and start container $IMAGE_ID"
         exit 1
